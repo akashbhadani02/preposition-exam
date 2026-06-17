@@ -97,7 +97,6 @@ margin-top:10px;
 text-align:center;
 font-weight:bold;
 }
-
 </style>
 </head>
 
@@ -107,14 +106,12 @@ font-weight:bold;
 
 <h1>Preposition Exam (Chapter 11)</h1>
 
-<!-- START SCREEN -->
 <div id="startScreen">
 <h3>Enter Student Name</h3>
 <input type="text" id="studentName" placeholder="Your Name">
 <button onclick="startExam()">Start Exam</button>
 </div>
 
-<!-- QUIZ SCREEN -->
 <div id="quizBox">
 
 <div id="progress"></div>
@@ -131,7 +128,54 @@ font-weight:bold;
 
 <script>
 
-/* ================= FULL QUESTION BANK ================= */
+/* ================= SECURITY FEATURES ================= */
+
+// Disable right click + copy/paste
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("paste", e => e.preventDefault());
+
+// Disable dev tools shortcuts
+document.addEventListener("keydown", function (e) {
+  if (
+    e.key === "F12" ||
+    (e.ctrlKey && e.key === "u") ||
+    (e.ctrlKey && e.shiftKey && e.key === "I") ||
+    (e.ctrlKey && e.shiftKey && e.key === "J")
+  ) {
+    e.preventDefault();
+  }
+});
+
+// Detect dev tools (basic)
+setInterval(() => {
+  const devtools = window.outerHeight - window.innerHeight > 200 ||
+                   window.outerWidth - window.innerWidth > 200;
+
+  if (devtools) {
+    document.body.innerHTML =
+      "<h1 style='text-align:center;color:red;margin-top:50px;'>⚠️ Exam Stopped: Developer Tools Detected</h1>";
+    clearInterval(timer);
+  }
+}, 1000);
+
+// Tab switch detection
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    alert("⚠️ Tab switching detected! Your exam may be invalid.");
+  }
+});
+
+// Exit fullscreen detection
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement) {
+    alert("⚠️ You exited fullscreen. Exam submitted.");
+    showResult();
+  }
+});
+
+/* ================= QUESTION BANK ================= */
 
 const allQuestions = [
 {q:"The children laughed ___ the clown.",options:["at","on","in","under"],answer:"at"},
@@ -352,22 +396,26 @@ const allQuestions = [
 {q:"The dog rested ___ the shade.",options:["in","under","on","at"],answer:"in"},
 {q:"The students gathered ___ the school courtyard.",options:["in","under","on","at"],answer:"in"},
 {q:"The traveler stood ___ the mountain summit.",options:["on","under","in","at"],answer:"on"},
-
-// 👉 PASTE YOUR FULL 500 QUESTIONS HERE
 ];
 
 /* ================= VARIABLES ================= */
 
 let questions = [];
 let usedQuestions = new Set();
-
 let current = 0;
 let score = 0;
 let answers = [];
 let student = "";
-
 let timer;
-let timeLeft = 3;
+let timeLeft = 30;
+let examStarted = false;
+
+/* ================= FULLSCREEN ================= */
+
+function goFullScreen(){
+  let elem = document.documentElement;
+  if (elem.requestFullscreen) elem.requestFullscreen();
+}
 
 /* ================= SHUFFLE ================= */
 
@@ -379,7 +427,7 @@ let j=Math.floor(Math.random()*(i+1));
 return arr;
 }
 
-/* ================= START EXAM ================= */
+/* ================= START ================= */
 
 function startExam(){
 
@@ -390,8 +438,13 @@ alert("Enter name");
 return;
 }
 
+examStarted = true;
+document.getElementById("studentName").disabled = true;
+
 document.getElementById("startScreen").style.display="none";
 document.getElementById("quizBox").style.display="block";
+
+goFullScreen();
 
 /* reset */
 current = 0;
@@ -399,9 +452,7 @@ score = 0;
 answers = [];
 usedQuestions.clear();
 
-/* remove duplicates + pick 80 */
 questions = [];
-
 shuffle(allQuestions);
 
 for(let i=0;i<allQuestions.length;i++){
@@ -413,7 +464,7 @@ usedQuestions.add(qText);
 questions.push(allQuestions[i]);
 }
 
-if(questions.length === 80) break;
+if(questions.length === 8) break;
 }
 
 loadQuestion();
@@ -440,7 +491,7 @@ autoSkip();
 },1000);
 }
 
-/* ================= LOAD QUESTION ================= */
+/* ================= LOAD ================= */
 
 function loadQuestion(){
 
@@ -452,7 +503,7 @@ return;
 let q = questions[current];
 
 document.getElementById("progress").innerHTML =
-`${student} | Q ${current+1}/80`;
+`${student} | Q ${current+1}/${questions.length}`;
 
 document.getElementById("question").innerHTML = q.q;
 
@@ -462,7 +513,7 @@ shuffle(options);
 let html = "";
 
 options.forEach(opt=>{
-html += `<button class="option" onclick="check('${opt}')">${opt}</button>`;
+html += `<button class="option" onclick="check(this.innerText)">${opt}</button>`;
 });
 
 document.getElementById("options").innerHTML = html;
@@ -470,7 +521,7 @@ document.getElementById("options").innerHTML = html;
 startTimer();
 }
 
-/* ================= CHECK ANSWER ================= */
+/* ================= CHECK ================= */
 
 function check(selected){
 
@@ -514,9 +565,6 @@ correct:q.answer,
 isCorrect:false
 });
 
-document.getElementById("score").innerHTML =
-`Answered: ${answers.length}`;
-
 next();
 }
 
@@ -540,10 +588,10 @@ let wrong = answers.filter(a => !a.isCorrect).length;
 
 document.getElementById("result").innerHTML = `
 <b>Student:</b> ${student}<br>
-<b>Total:</b> 80<br>
+<b>Total:</b> ${questions.length}<br>
 <b>Correct:</b> ${score}<br>
 <b>Wrong:</b> ${wrong}<br>
-<b>Accuracy:</b> ${(score/80*100).toFixed(2)}%
+<b>Accuracy:</b> ${(score/questions.length*100).toFixed(2)}%
 `;
 
 clearInterval(timer);
