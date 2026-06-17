@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preposition Speed Exam</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:linear-gradient(135deg,#4facfe,#00f2fe);
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
+}
+
+.container{
+background:white;
+width:100%;
+max-width:700px;
+padding:25px;
+border-radius:20px;
+}
+
+h1{text-align:center;margin-bottom:10px;}
+
+#startScreen{text-align:center;}
+
+input{
+width:100%;
+padding:12px;
+font-size:18px;
+margin:10px 0;
+}
+
+button{
+width:100%;
+padding:12px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#2ecc71;
+color:white;
+cursor:pointer;
+}
+
+#quizBox{display:none;}
+
+#progress{
+font-weight:bold;
+margin-bottom:10px;
+}
+
+#timer{
+font-size:18px;
+color:red;
+margin-bottom:10px;
+font-weight:bold;
+}
+
+#question{
+font-size:22px;
+margin-bottom:15px;
+font-weight:bold;
+}
+
+.option{
+width:100%;
+padding:12px;
+margin:6px 0;
+background:#3498db;
+color:white;
+border:none;
+border-radius:10px;
+font-size:18px;
+cursor:pointer;
+}
+
+.correct{background:#27ae60 !important;}
+.wrong{background:#e74c3c !important;}
+
+#score{
+text-align:center;
+margin-top:10px;
+}
+
+#result{
+margin-top:10px;
+text-align:center;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Preposition Exam (Chapter 11)</h1>
+
+<!-- START SCREEN -->
+<div id="startScreen">
+<h3>Enter Student Name</h3>
+<input type="text" id="studentName" placeholder="Your Name">
+<button onclick="startExam()">Start Exam</button>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="quizBox">
+
+<div id="progress"></div>
+<div id="timer"></div>
+<div id="question"></div>
+<div id="options"></div>
+
+<div id="score">Answered: 0</div>
+<div id="result"></div>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= FULL QUESTION BANK ================= */
+
+const allQuestions = [
+{q:"The children laughed ___ the clown.",options:["at","on","in","under"],answer:"at"},
+{q:"The package arrived ___ the morning.",options:["in","on","at","under"],answer:"in"},
+{q:"The bird perched ___ the fence.",options:["on","in","under","at"],answer:"on"},
+{q:"The students gathered ___ the auditorium.",options:["in","on","at","under"],answer:"in"},
+{q:"The airplane passed ___ our heads.",options:["over","under","in","at"],answer:"over"},
+{q:"The teacher stood ___ the entrance.",options:["at","on","in","under"],answer:"at"},
+{q:"The rabbit jumped ___ the log.",options:["over","under","in","at"],answer:"over"},
+{q:"The coins fell ___ the floor.",options:["onto","under","in","at"],answer:"onto"},
+{q:"The children sat ___ the shade of the tree.",options:["under","on","in","at"],answer:"under"},
+{q:"The fish swam ___ the rocks.",options:["between","under","on","at"],answer:"between"},
+{q:"The boy leaned ___ the wall.",options:["against","under","on","at"],answer:"against"},
+{q:"The plane disappeared ___ the clouds.",options:["into","under","on","at"],answer:"into"},
+{q:"The ball bounced ___ the goalpost.",options:["against","under","in","at"],answer:"against"},
+{q:"The guests arrived ___ dinner time.",options:["at","on","in","under"],answer:"at"},
+{q:"The child hid ___ the staircase.",options:["under","on","in","at"],answer:"under"},
+{q:"The tourists stood ___ the monument.",options:["near","under","on","at"],answer:"near"},
+{q:"The bird flew ___ the forest.",options:["across","under","on","at"],answer:"across"},
+{q:"The cat rested ___ the windowsill.",options:["on","under","in","at"],answer:"on"},
+{q:"The boat drifted ___ the shore.",options:["towards","under","on","at"],answer:"towards"},
+{q:"The teacher wrote notes ___ the notebook.",options:["in","under","on","at"],answer:"in"},
+{q:"The dog barked ___ the passing car.",options:["at","under","on","in"],answer:"at"},
+{q:"The children ran ___ the field.",options:["across","under","on","at"],answer:"across"},
+{q:"The horse galloped ___ the meadow.",options:["across","under","on","at"],answer:"across"},
+{q:"The monkey swung ___ the branches.",options:["from","under","on","at"],answer:"from"},
+{q:"The students looked ___ the map.",options:["at","under","on","in"],answer:"at"},
+{q:"The airplane landed ___ schedule.",options:["on","under","in","at"],answer:"on"},
+{q:"The painting hangs ___ the doorway.",options:["above","under","on","at"],answer:"above"},
+{q:"The dog slept ___ the porch.",options:["on","under","in","at"],answer:"on"},
+{q:"The children danced ___ the stage.",options:["on","under","in","at"],answer:"on"},
+{q:"The car stopped ___ a red light.",options:["at","under","on","in"],answer:"at"},
+{q:"The bird nested ___ the chimney.",options:["in","under","on","at"],answer:"in"},
+{q:"The child stood ___ the queue.",options:["in","under","on","at"],answer:"in"},
+{q:"The students moved ___ the laboratory.",options:["into","under","on","at"],answer:"into"},
+{q:"The fish hid ___ the coral.",options:["among","under","on","at"],answer:"among"},
+{q:"The teacher walked ___ the corridor.",options:["down","under","on","at"],answer:"down"},
+{q:"The bird flew ___ the valley.",options:["over","under","on","at"],answer:"over"},
+{q:"The cat jumped ___ the basket.",options:["into","under","on","at"],answer:"into"},
+{q:"The tourists traveled ___ Europe.",options:["across","under","on","at"],answer:"across"},
+{q:"The player kicked the ball ___ the net.",options:["into","under","on","at"],answer:"into"},
+{q:"The airplane soared ___ the city.",options:["above","under","on","at"],answer:"above"},
+{q:"The children played ___ the backyard.",options:["in","under","on","at"],answer:"in"},
+{q:"The dog crawled ___ the fence.",options:["under","on","in","at"],answer:"under"},
+{q:"The ball rolled ___ the hill.",options:["down","under","on","at"],answer:"down"},
+{q:"The teacher sat ___ her desk.",options:["at","under","on","in"],answer:"at"},
+{q:"The child climbed ___ the playground slide.",options:["up","under","on","at"],answer:"up"},
+{q:"The hikers rested ___ a tree.",options:["under","on","in","at"],answer:"under"},
+{q:"The bird sat ___ the scarecrow.",options:["on","under","in","at"],answer:"on"},
+{q:"The children looked ___ the aquarium.",options:["into","under","on","at"],answer:"into"},
+{q:"The teacher pointed ___ the chart.",options:["at","under","on","in"],answer:"at"},
+{q:"The plane flew ___ the desert.",options:["over","under","on","at"],answer:"over"},
+{q:"The dog waited ___ the gate.",options:["by","under","on","in"],answer:"by"},
+{q:"The ball bounced ___ the ceiling.",options:["off","under","on","in"],answer:"off"},
+{q:"The fish swam ___ the surface.",options:["below","under","on","at"],answer:"below"},
+{q:"The cat rested ___ the fireplace.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The students came ___ the hall.",options:["out of","under","on","at"],answer:"out of"},
+{q:"The child placed the toy ___ the box.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The hikers crossed ___ the river.",options:["over","under","on","at"],answer:"over"},
+{q:"The train emerged ___ the tunnel.",options:["from","under","on","at"],answer:"from"},
+{q:"The children walked ___ the museum entrance.",options:["towards","under","on","at"],answer:"towards"},
+{q:"The bird landed ___ the branch.",options:["on","under","in","at"],answer:"on"},
+{q:"The teacher stood ___ the classroom window.",options:["by","under","in","at"],answer:"by"},
+{q:"The train sped ___ the countryside.",options:["across","under","on","at"],answer:"across"},
+{q:"The airplane flew ___ the island.",options:["over","under","in","at"],answer:"over"},
+{q:"The child placed the book ___ the backpack.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The dog slept ___ the tree.",options:["under","on","in","at"],answer:"under"},
+{q:"The bird flew ___ the waterfall.",options:["past","under","on","at"],answer:"past"},
+{q:"The cat jumped ___ the windowsill.",options:["onto","under","in","at"],answer:"onto"},
+{q:"The bus stopped ___ the signal.",options:["at","under","on","in"],answer:"at"},
+{q:"The teacher sat ___ the students.",options:["among","under","on","at"],answer:"among"},
+{q:"The dog ran ___ the road and disappeared.",options:["across","under","on","at"],answer:"across"},
+{q:"The child hid ___ the tablecloth.",options:["under","on","in","at"],answer:"under"},
+{q:"The airplane passed ___ the airport tower.",options:["above","under","in","at"],answer:"above"},
+{q:"The ball bounced ___ the stairs.",options:["down","under","on","at"],answer:"down"},
+{q:"The bird rested ___ the rooftop.",options:["on","under","in","at"],answer:"on"},
+{q:"The tourists entered ___ the palace.",options:["into","under","on","at"],answer:"into"},
+{q:"The teacher pointed ___ the screen.",options:["at","under","on","in"],answer:"at"},
+{q:"The cat ran ___ the sofa.",options:["behind","under","on","at"],answer:"behind"},
+{q:"The train moved ___ the bridge.",options:["across","under","on","at"],answer:"across"},
+{q:"The puppy crawled ___ the basket.",options:["into","under","on","at"],answer:"into"},
+{q:"The squirrel hid ___ the leaves.",options:["among","under","on","at"],answer:"among"},
+{q:"The ball rolled ___ the bench.",options:["under","on","in","at"],answer:"under"},
+{q:"The dog stood ___ its owner.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The teacher came ___ the staff room.",options:["from","under","on","at"],answer:"from"},
+{q:"The children sat ___ the grass.",options:["on","under","in","at"],answer:"on"},
+{q:"The train arrived ___ midnight.",options:["at","under","on","in"],answer:"at"},
+{q:"The cat climbed ___ the curtain.",options:["up","under","on","at"],answer:"up"},
+{q:"The ball landed ___ the roof.",options:["on","under","in","at"],answer:"on"},
+{q:"The child ran ___ the classroom.",options:["into","under","on","at"],answer:"into"},
+{q:"The airplane flew ___ the valley.",options:["over","under","on","at"],answer:"over"},
+{q:"The bird sat ___ the electric wire.",options:["on","under","in","at"],answer:"on"},
+{q:"The teacher stood ___ the blackboard.",options:["near","under","on","at"],answer:"near"},
+{q:"The child jumped ___ the puddle.",options:["over","under","on","at"],answer:"over"},
+{q:"The fish swam ___ the seaweed.",options:["among","under","on","at"],answer:"among"},
+{q:"The cat looked ___ the cupboard.",options:["into","under","on","at"],answer:"into"},
+{q:"The ball bounced ___ the goalkeeper.",options:["past","under","on","at"],answer:"past"},
+{q:"The students moved ___ the library.",options:["towards","under","on","at"],answer:"towards"},
+{q:"The bird flew ___ the nest.",options:["out of","under","on","at"],answer:"out of"},
+{q:"The teacher wrote ___ the notebook.",options:["in","under","on","at"],answer:"in"},
+{q:"The train crossed ___ the river.",options:["over","under","on","at"],answer:"over"},
+{q:"The cat slept ___ the fireplace rug.",options:["on","under","in","at"],answer:"on"},
+{q:"The bird soared ___ the hills.",options:["above","under","on","at"],answer:"above"},
+{q:"The child stood ___ the doorway.",options:["in","under","on","at"],answer:"in"},
+{q:"The tourists climbed ___ the tower.",options:["up","under","on","at"],answer:"up"},
+{q:"The child hid ___ the bushes.",options:["among","under","on","at"],answer:"among"},
+{q:"The bird perched ___ the gate.",options:["on","under","in","at"],answer:"on"},
+{q:"The teacher walked ___ the students.",options:["between","under","on","at"],answer:"between"},
+{q:"The dog slept ___ the kennel.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The bird flew ___ the rainbow.",options:["across","under","on","at"],answer:"across"},
+{q:"The students came ___ the classroom.",options:["out of","under","on","at"],answer:"out of"},
+{q:"The ball rolled ___ the hallway.",options:["down","under","on","at"],answer:"down"},
+{q:"The teacher stood ___ the center of the room.",options:["in","under","on","at"],answer:"in"},
+{q:"The tourists walked ___ the bridge.",options:["across","under","on","at"],answer:"across"},
+{q:"The dog barked ___ the moon.",options:["at","under","on","in"],answer:"at"},
+{q:"The bird flew ___ the barn.",options:["into","under","on","at"],answer:"into"},
+{q:"The child sat ___ the swing.",options:["on","under","in","at"],answer:"on"},
+{q:"The train stopped ___ the crossing.",options:["at","under","on","in"],answer:"at"},
+{q:"The cat hid ___ the wardrobe.",options:["behind","under","on","at"],answer:"behind"},
+{q:"The airplane flew ___ the mountains.",options:["above","under","on","at"],answer:"above"},
+{q:"The ball landed ___ the basket.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The cat slept ___ the armchair.",options:["in","under","on","at"],answer:"in"},
+{q:"The teacher stood ___ the classroom entrance.",options:["at","under","on","in"],answer:"at"},
+{q:"The airplane flew ___ the volcano.",options:["over","under","on","at"],answer:"over"},
+{q:"The ball rolled ___ the staircase.",options:["down","under","on","at"],answer:"down"},
+{q:"The bird perched ___ the chimney.",options:["on","under","in","at"],answer:"on"},
+{q:"The dog ran ___ the football field.",options:["across","under","on","at"],answer:"across"},
+{q:"The students sat ___ the auditorium.",options:["in","under","on","at"],answer:"in"},
+{q:"The cat jumped ___ the cupboard.",options:["onto","under","in","at"],answer:"onto"},
+{q:"The teacher walked ___ the rows of desks.",options:["between","under","on","at"],answer:"between"},
+{q:"The child hid ___ the curtain.",options:["behind","under","on","at"],answer:"behind"},
+{q:"The bird flew ___ the playground.",options:["above","under","on","at"],answer:"above"},
+{q:"The dog waited ___ the front door.",options:["by","under","on","at"],answer:"by"},
+{q:"The ball bounced ___ the fence.",options:["off","under","on","at"],answer:"off"},
+{q:"The students entered ___ the classroom quietly.",options:["into","under","on","at"],answer:"into"},
+{q:"The cat ran ___ the kitchen table.",options:["under","on","in","at"],answer:"under"},
+{q:"The airplane disappeared ___ the clouds.",options:["among","under","on","at"],answer:"among"},
+{q:"The teacher sat ___ the head of the table.",options:["at","under","on","in"],answer:"at"},
+{q:"The bird flew ___ the treetops.",options:["above","under","on","at"],answer:"above"},
+{q:"The child placed the toy ___ the shelf.",options:["on","under","in","at"],answer:"on"},
+{q:"The cat climbed ___ the roof.",options:["onto","under","in","at"],answer:"onto"},
+{q:"The bird sat ___ the garden fence.",options:["on","under","in","at"],answer:"on"},
+{q:"The airplane flew ___ the forest.",options:["over","under","on","at"],answer:"over"},
+{q:"The dog rested ___ the porch.",options:["on","under","in","at"],answer:"on"},
+{q:"The tourists climbed ___ the hill.",options:["up","under","on","at"],answer:"up"},
+{q:"The ball landed ___ the flowerpot.",options:["in","under","on","at"],answer:"in"},
+{q:"The students walked ___ the corridor.",options:["down","under","on","at"],answer:"down"},
+{q:"The cat looked ___ the basket.",options:["into","under","on","at"],answer:"into"},
+{q:"The train emerged ___ the tunnel.",options:["from","under","on","at"],answer:"from"},
+{q:"The teacher stood ___ the podium.",options:["behind","under","on","at"],answer:"behind"},
+{q:"The child sat ___ the corner of the room.",options:["in","under","on","at"],answer:"in"},
+{q:"The airplane passed ___ the mountains.",options:["over","under","on","at"],answer:"over"},
+{q:"The cat hid ___ the cupboard.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The train arrived ___ the terminal.",options:["at","under","on","in"],answer:"at"},
+{q:"The bird flew ___ the lighthouse.",options:["past","under","on","at"],answer:"past"},
+{q:"The child walked ___ the zebra crossing.",options:["across","under","on","at"],answer:"across"},
+{q:"The dog slept ___ the garage.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The airplane flew ___ the ocean waves.",options:["above","under","on","at"],answer:"above"},
+{q:"The cat sat ___ the fence post.",options:["on","under","in","at"],answer:"on"},
+{q:"The train crossed ___ the bridge.",options:["over","under","on","at"],answer:"over"},
+{q:"The bird disappeared ___ the forest.",options:["into","under","on","at"],answer:"into"},
+{q:"The dog barked ___ the postman.",options:["at","under","on","in"],answer:"at"},
+{q:"The airplane landed ___ the runway safely.",options:["on","under","in","at"],answer:"on"},
+{q:"The ball fell ___ the drain.",options:["into","under","on","at"],answer:"into"},
+{q:"The cat rested ___ the sunny window.",options:["by","under","on","at"],answer:"by"},
+{q:"The bird flew ___ the garden pond.",options:["over","under","on","at"],answer:"over"},
+{q:"The child climbed ___ the ladder.",options:["up","under","on","at"],answer:"up"},
+{q:"The airplane flew ___ the skyline.",options:["above","under","on","at"],answer:"above"},
+{q:"The ball rolled ___ the classroom.",options:["into","under","on","at"],answer:"into"},
+{q:"The cat slept ___ the doormat.",options:["on","under","in","at"],answer:"on"},
+{q:"The bird perched ___ the balcony railing.",options:["on","under","in","at"],answer:"on"},
+{q:"The tourists entered ___ the cathedral.",options:["into","under","on","at"],answer:"into"},
+{q:"The airplane flew ___ the harbor.",options:["over","under","on","at"],answer:"over"},
+{q:"The ball bounced ___ the pavement.",options:["on","under","in","at"],answer:"on"},
+{q:"The students walked ___ the sports ground.",options:["across","under","on","at"],answer:"across"},
+{q:"The cat looked ___ the fish tank.",options:["into","under","on","at"],answer:"into"},
+{q:"The train stopped ___ the final station.",options:["at","under","on","in"],answer:"at"},
+{q:"The firefighter climbed ___ the burning building.",options:["into","under","on","at"],answer:"into"},
+{q:"The eagle soared ___ the canyon.",options:["above","under","in","at"],answer:"above"},
+{q:"The painter stood ___ the canvas.",options:["before","under","on","at"],answer:"before"},
+{q:"The monkey swung ___ one vine to another.",options:["from","under","on","at"],answer:"from"},
+{q:"The hikers rested ___ a large rock.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The students stood ___ attention.",options:["at","under","on","in"],answer:"at"},
+{q:"The bee flew ___ the flowers.",options:["among","under","on","at"],answer:"among"},
+{q:"The bird glided ___ the lake.",options:["over","under","on","at"],answer:"over"},
+{q:"The tourists sat ___ the monument steps.",options:["on","under","in","at"],answer:"on"},
+{q:"The kite floated ___ the rooftops.",options:["above","under","on","at"],answer:"above"},
+{q:"The hikers climbed ___ the steep cliff.",options:["up","under","on","at"],answer:"up"},
+{q:"The squirrel leaped ___ branch to branch.",options:["from","under","on","at"],answer:"from"},
+{q:"The singer stood ___ the spotlight.",options:["under","on","in","at"],answer:"under"},
+{q:"The dolphin swam ___ the boat.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The astronaut floated ___ space.",options:["in","under","on","at"],answer:"in"},
+{q:"The teacher stood ___ the projector screen.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The fox hid ___ the cave.",options:["inside","under","on","at"],answer:"inside"},
+{q:"The tourists wandered ___ the ruins.",options:["among","under","on","at"],answer:"among"},
+{q:"The plane flew ___ the storm clouds.",options:["above","under","on","at"],answer:"above"},
+{q:"The dog curled up ___ the fireplace.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The eagle nested ___ the cliff.",options:["on","under","in","at"],answer:"on"},
+{q:"The rabbit emerged ___ the burrow.",options:["from","under","on","at"],answer:"from"},
+{q:"The boy sat ___ the edge of the dock.",options:["on","under","in","at"],answer:"on"},
+{q:"The parade marched ___ the main street.",options:["down","under","on","at"],answer:"down"},
+{q:"The helicopter hovered ___ the stadium.",options:["above","under","on","at"],answer:"above"},
+{q:"The bird landed ___ the scarecrow's hat.",options:["on","under","in","at"],answer:"on"},
+{q:"The fisherman stood ___ the riverbank.",options:["on","under","in","at"],answer:"on"},
+{q:"The horse jumped ___ the obstacle.",options:["over","under","on","at"],answer:"over"},
+{q:"The fox watched ___ the shadows.",options:["from","under","on","at"],answer:"from"},
+{q:"The traveler rested ___ the roadside.",options:["beside","under","on","at"],answer:"beside"},
+{q:"The boat drifted ___ the current.",options:["with","under","on","at"],answer:"with"},
+{q:"The cat stretched ___ the sunshine.",options:["in","under","on","at"],answer:"in"},
+{q:"The tourists photographed the castle ___ a distance.",options:["from","under","on","at"],answer:"from"},
+{q:"The rabbit sat ___ the garden wall.",options:["on","under","in","at"],answer:"on"},
+{q:"The children played ___ the waterfall.",options:["near","under","on","at"],answer:"near"},
+{q:"The climber hung ___ a rope.",options:["from","under","on","at"],answer:"from"},
+{q:"The squirrel hid nuts ___ the tree roots.",options:["among","under","on","at"],answer:"among"},
+{q:"The eagle flew ___ the mountain peaks.",options:["above","under","on","at"],answer:"above"},
+{q:"The tourists relaxed ___ the lakeside.",options:["by","under","on","at"],answer:"by"},
+{q:"The bird sang ___ dawn.",options:["at","under","on","in"],answer:"at"},
+{q:"The dog rested ___ the shade.",options:["in","under","on","at"],answer:"in"},
+{q:"The students gathered ___ the school courtyard.",options:["in","under","on","at"],answer:"in"},
+{q:"The traveler stood ___ the mountain summit.",options:["on","under","in","at"],answer:"on"},
+
+// 👉 PASTE YOUR FULL 500 QUESTIONS HERE
+];
+
+/* ================= VARIABLES ================= */
+
+let questions = [];
+let usedQuestions = new Set();
+
+let current = 0;
+let score = 0;
+let answers = [];
+let student = "";
+
+let timer;
+let timeLeft = 3;
+
+/* ================= SHUFFLE ================= */
+
+function shuffle(arr){
+for(let i=arr.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[arr[i],arr[j]]=[arr[j],arr[i]];
+}
+return arr;
+}
+
+/* ================= START EXAM ================= */
+
+function startExam(){
+
+student = document.getElementById("studentName").value;
+
+if(student.trim()==""){
+alert("Enter name");
+return;
+}
+
+document.getElementById("startScreen").style.display="none";
+document.getElementById("quizBox").style.display="block";
+
+/* reset */
+current = 0;
+score = 0;
+answers = [];
+usedQuestions.clear();
+
+/* remove duplicates + pick 80 */
+questions = [];
+
+shuffle(allQuestions);
+
+for(let i=0;i<allQuestions.length;i++){
+
+let qText = allQuestions[i].q;
+
+if(!usedQuestions.has(qText)){
+usedQuestions.add(qText);
+questions.push(allQuestions[i]);
+}
+
+if(questions.length === 80) break;
+}
+
+loadQuestion();
+}
+
+/* ================= TIMER ================= */
+
+function startTimer(){
+clearInterval(timer);
+timeLeft = 30;
+
+document.getElementById("timer").innerHTML = "⏱ 30s";
+
+timer = setInterval(()=>{
+
+timeLeft--;
+document.getElementById("timer").innerHTML = `⏱ ${timeLeft}s`;
+
+if(timeLeft <= 0){
+clearInterval(timer);
+autoSkip();
+}
+
+},1000);
+}
+
+/* ================= LOAD QUESTION ================= */
+
+function loadQuestion(){
+
+if(current >= questions.length){
+showResult();
+return;
+}
+
+let q = questions[current];
+
+document.getElementById("progress").innerHTML =
+`${student} | Q ${current+1}/80`;
+
+document.getElementById("question").innerHTML = q.q;
+
+let options = [...q.options];
+shuffle(options);
+
+let html = "";
+
+options.forEach(opt=>{
+html += `<button class="option" onclick="check('${opt}')">${opt}</button>`;
+});
+
+document.getElementById("options").innerHTML = html;
+
+startTimer();
+}
+
+/* ================= CHECK ANSWER ================= */
+
+function check(selected){
+
+clearInterval(timer);
+
+let q = questions[current];
+let buttons = document.querySelectorAll(".option");
+
+buttons.forEach(b=>{
+b.disabled = true;
+
+if(b.innerText === q.answer) b.classList.add("correct");
+if(b.innerText === selected && selected !== q.answer) b.classList.add("wrong");
+});
+
+answers.push({
+q:q.q,
+selected,
+correct:q.answer,
+isCorrect:selected===q.answer
+});
+
+if(selected === q.answer) score++;
+
+document.getElementById("score").innerHTML =
+`Answered: ${answers.length}`;
+
+setTimeout(next,700);
+}
+
+/* ================= AUTO SKIP ================= */
+
+function autoSkip(){
+
+let q = questions[current];
+
+answers.push({
+q:q.q,
+selected:"(no answer)",
+correct:q.answer,
+isCorrect:false
+});
+
+document.getElementById("score").innerHTML =
+`Answered: ${answers.length}`;
+
+next();
+}
+
+/* ================= NEXT ================= */
+
+function next(){
+current++;
+loadQuestion();
+}
+
+/* ================= RESULT ================= */
+
+function showResult(){
+
+document.getElementById("question").innerHTML =
+"🎉 Exam Completed";
+
+document.getElementById("options").innerHTML = "";
+
+let wrong = answers.filter(a => !a.isCorrect).length;
+
+document.getElementById("result").innerHTML = `
+<b>Student:</b> ${student}<br>
+<b>Total:</b> 80<br>
+<b>Correct:</b> ${score}<br>
+<b>Wrong:</b> ${wrong}<br>
+<b>Accuracy:</b> ${(score/80*100).toFixed(2)}%
+`;
+
+clearInterval(timer);
+}
+
+</script>
+
+</body>
+</html>
