@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -164,6 +164,117 @@ body{
     user-select:none;
 }
 
+/* certificate */
+#certificate{
+display:none;
+padding:20px;
+}
+
+.cert-box{
+max-width:900px;
+margin:auto;
+background:white;
+padding:40px;
+border:10px double gold;
+border-radius:20px;
+text-align:center;
+position:relative;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.cert-box h1{
+color:#2c3e50;
+margin:10px 0;
+font-size:32px;
+}
+
+.cert-box h2{
+font-size:30px;
+color:#27ae60;
+margin:20px 0;
+border-bottom:2px solid #27ae60;
+display:inline-block;
+padding:5px 20px;
+}
+
+.cert-box h3{
+color:#34495e;
+margin:10px 0;
+}
+
+.line{
+color:#555;
+font-size:16px;
+margin:10px 0;
+}
+
+.resultBox{
+margin-top:20px;
+font-size:18px;
+color:#222;
+}
+
+.signs{
+display:flex;
+justify-content:space-between;
+margin-top:50px;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.signs div{
+border-top:2px solid black;
+width:180px;
+padding-top:5px;
+}
+
+#printBtn{
+margin-top:20px;
+padding:12px 20px;
+border:none;
+background:#27ae60;
+color:white;
+border-radius:10px;
+cursor:pointer;
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+.cert-box{
+padding:20px;
+}
+
+.cert-box h1{
+font-size:22px;
+}
+
+.cert-box h2{
+font-size:22px;
+}
+
+.signs{
+justify-content:center;
+}
+}
+
+/* PRINT FIX */
+@media print{
+body *{
+visibility:hidden;
+}
+
+#certificate, #certificate *{
+visibility:visible;
+}
+
+#certificate{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+}
+}
+
 </style>
 </head>
 <body>
@@ -204,38 +315,39 @@ Score: 0
 
 <div id="certificate">
 
-<img id="schoolLogo"
-src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
-width="100">
+<div class="cert-box">
 
-<h2>🏆 CERTIFICATE OF ACHIEVEMENT</h2>
+    <img id="schoolLogo"
+    src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
+    width="80">
 
-<p>This Certificate is Proudly Presented To</p>
+    <h1>🏆 CERTIFICATE OF ACHIEVEMENT</h1>
 
-<h3 id="certName"></h3>
+    <p class="line">This is proudly awarded to</p>
 
-<p>For Successfully Completing the</p>
+    <h2 id="certName">Student Name</h2>
 
-<h3>Preposition Practice Examination</h3>
+    <p class="line">For successfully completing</p>
 
-<p id="certPercent"></p>
+    <h3>Preposition Practice Examination</h3>
 
-<p id="certStatus"></p>
+    <div class="resultBox">
 
-<p id="certGrade"></p>
+        <p id="certPercent"></p>
+        <p id="certStatus"></p>
+        <p id="certGrade"></p>
+        <p id="certDate"></p>
 
-<p id="certDate"></p>
+    </div>
 
-<button id="printBtn"
-onclick="window.print()">
+    <div class="signs">
+        <div>Teacher Signature</div>
+        <div>Principal Signature</div>
+    </div>
 
-🖨 Print Certificate
+    <button id="printBtn" onclick="window.print()">🖨 Print Certificate</button>
 
-</button>
-
-<button id="downloadBtn">
-📥 Download Result
-</button>
+</div>
 
 </div>
 <div id="reviewSection"
