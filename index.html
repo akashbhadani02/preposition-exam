@@ -1,427 +1,478 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Advanced Preposition Exam</title>
+    <title>Advanced Preposition Exam</title>
 
-<style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+        body {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-body{
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-}
+        .container {
+            background: #fff;
+            width: 100%;
+            max-width: 900px;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
+        }
 
-.container{
-background:#fff;
-width:100%;
-max-width:900px;
-padding:25px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,.2);
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
 
-h1{
-text-align:center;
-margin-bottom:15px;
-}
+        #studentSection {
+            text-align: center;
+        }
 
-#studentSection{
-text-align:center;
-}
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
 
-input{
-width:100%;
-padding:12px;
-margin:10px 0;
-font-size:18px;
-border:1px solid #ccc;
-border-radius:8px;
-}
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
 
-button{
-padding:12px 20px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-size:18px;
-}
+        .startBtn {
+            background: #27ae60;
+            color: white;
+            width: 100%;
+        }
 
-.startBtn{
-background:#27ae60;
-color:white;
-width:100%;
-}
+        #quizSection {
+            display: none;
+        }
 
-#quizSection{
-display:none;
-}
+        #progressText {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-#progressText{
-font-size:18px;
-font-weight:bold;
-margin-bottom:10px;
-}
+        .progress {
+            height: 18px;
+            background: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
 
-.progress{
-height:18px;
-background:#ddd;
-border-radius:20px;
-overflow:hidden;
-margin-bottom:15px;
-}
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #27ae60;
+            transition: .4s;
+        }
 
-.progress-bar{
-height:100%;
-width:0%;
-background:#27ae60;
-transition:.4s;
-}
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: right;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
 
-#timer{
-font-size:22px;
-font-weight:bold;
-text-align:right;
-color:#e74c3c;
-margin-bottom:15px;
-}
+        #question {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
 
-#question{
-font-size:24px;
-font-weight:bold;
-margin-bottom:20px;
-}
+        .option {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+        }
 
-.option{
-display:block;
-width:100%;
-padding:14px;
-margin:8px 0;
-background:#3498db;
-color:white;
-border:none;
-border-radius:10px;
-font-size:18px;
-}
+        .option:hover {
+            background: #2980b9;
+        }
 
-.option:hover{
-background:#2980b9;
-}
+        .correct {
+            background: #27ae60 !important;
+        }
 
-.correct{
-background:#27ae60!important;
-}
+        .wrong {
+            background: #e74c3c !important;
+        }
 
-.wrong{
-background:#e74c3c!important;
-}
+        #scoreBoard {
+            margin-top: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
 
-#scoreBoard{
-margin-top:15px;
-font-size:20px;
-font-weight:bold;
-text-align:center;
-}
+        #certificate {
+            display: none;
+            padding: 30px;
+            text-align: center;
+            border: 10px solid gold;
+            border-radius: 20px;
+        }
 
-#certificate{
-display:none;
-padding:30px;
-text-align:center;
-border:10px solid gold;
-border-radius:20px;
-}
+        #certificate h2 {
+            font-size: 40px;
+            color: green;
+            margin-bottom: 20px;
+        }
 
-#certificate h2{
-font-size:40px;
-color:green;
-margin-bottom:20px;
-}
+        #certificate h3 {
+            font-size: 28px;
+            margin: 15px 0;
+        }
 
-#certificate h3{
-font-size:28px;
-margin:15px 0;
-}
+        #printBtn {
+            background: #27ae60;
+            color: white;
+            margin-top: 20px;
+        }
 
-#printBtn{
-background:#27ae60;
-color:white;
-margin-top:20px;
-}
+        body {
+            user-select: none;
+        }
 
-body{
-    user-select:none;
-}
+        /* certificate */
+        #certificate {
+            display: none;
+            padding: 20px;
+        }
 
-/* certificate */
-#certificate{
-display:none;
-padding:20px;
-}
+        .cert-box {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 40px;
+            border: 10px double gold;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
 
-.cert-box{
-max-width:900px;
-margin:auto;
-background:white;
-padding:40px;
-border:10px double gold;
-border-radius:20px;
-text-align:center;
-position:relative;
-box-shadow:0 10px 25px rgba(0,0,0,0.2);
-}
+        .cert-box h1 {
+            color: #2c3e50;
+            margin: 10px 0;
+            font-size: 32px;
+        }
 
-.cert-box h1{
-color:#2c3e50;
-margin:10px 0;
-font-size:32px;
-}
+        .cert-box h2 {
+            font-size: 30px;
+            color: #27ae60;
+            margin: 20px 0;
+            border-bottom: 2px solid #27ae60;
+            display: inline-block;
+            padding: 5px 20px;
+        }
 
-.cert-box h2{
-font-size:30px;
-color:#27ae60;
-margin:20px 0;
-border-bottom:2px solid #27ae60;
-display:inline-block;
-padding:5px 20px;
-}
+        .cert-box h3 {
+            color: #34495e;
+            margin: 10px 0;
+        }
 
-.cert-box h3{
-color:#34495e;
-margin:10px 0;
-}
+        .line {
+            color: #555;
+            font-size: 16px;
+            margin: 10px 0;
+        }
 
-.line{
-color:#555;
-font-size:16px;
-margin:10px 0;
-}
+        .resultBox {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #222;
+        }
 
-.resultBox{
-margin-top:20px;
-font-size:18px;
-color:#222;
-}
+        .signs {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-.signs{
-display:flex;
-justify-content:space-between;
-margin-top:50px;
-flex-wrap:wrap;
-gap:20px;
-}
+        .signs div {
+            border-top: 2px solid black;
+            width: 180px;
+            padding-top: 5px;
+        }
 
-.signs div{
-border-top:2px solid black;
-width:180px;
-padding-top:5px;
-}
+        #printBtn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            background: #27ae60;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+        }
 
-#printBtn{
-margin-top:20px;
-padding:12px 20px;
-border:none;
-background:#27ae60;
-color:white;
-border-radius:10px;
-cursor:pointer;
-}
+        /* RESPONSIVE */
+        @media(max-width:600px) {
+            .cert-box {
+                padding: 20px;
+            }
 
-/* RESPONSIVE */
-@media(max-width:600px){
-.cert-box{
-padding:20px;
-}
+            .cert-box h1 {
+                font-size: 22px;
+            }
 
-.cert-box h1{
-font-size:22px;
-}
+            .cert-box h2 {
+                font-size: 22px;
+            }
 
-.cert-box h2{
-font-size:22px;
-}
+            .signs {
+                justify-content: center;
+            }
+        }
 
-.signs{
-justify-content:center;
-}
-}
+        /* PRINT FIX */
+        @media print {
 
-/* PRINT FIX */
-@media print{
-body *{
-visibility:hidden;
-}
+            body * {
+                visibility: hidden;
+            }
 
-#certificate, #certificate *{
-visibility:visible;
-}
+            #certificate,
+            #certificate * {
+                visibility: visible;
+            }
 
-#certificate{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-}
-}
+            #certificate {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+            }
 
-</style>
+            /* Q&A Hide */
+            #reviewSection,
+            #reviewSection * {
+                display: none !important;
+                visibility: hidden !important;
+            }
+
+            /* Buttons Hide */
+            #downloadQA,
+            #certificateBtn {
+                display: none !important;
+            }
+        }
+
+        #downloadBtn,
+        #certificateBtn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #reviewSection {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        #reviewTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #reviewTable th {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+        }
+
+        #reviewTable td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-<div id="studentSection">
+        <div id="studentSection">
 
-<h1>📚 Final Exam</h1>
+            <h1>📚 Final Exam</h1>
 
-<input id="studentName" placeholder="Enter student full Name (Surname,Name,Father's name)">
+            <input id="studentName" placeholder="Enter student full Name (Surname,Name,Father's name)">
 
-<button class="startBtn" onclick="startExam()">
-Start Exam
-</button>
+            <button class="startBtn" onclick="startExam()">
+                Start Exam
+            </button>
 
-</div>
+        </div>
 
-<div id="quizSection">
+        <div id="quizSection">
 
-<div id="progressText"></div>
+            <div id="progressText"></div>
 
-<div class="progress">
-<div id="progressBar" class="progress-bar"></div>
-</div>
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
 
-<div id="timer">30</div>
+            <div id="timer">30</div>
 
-<div id="question"></div>
+            <div id="question"></div>
 
-<div id="options"></div>
+            <div id="options"></div>
 
-<div id="scoreBoard">
-Score: 0
-</div>
+            <div id="scoreBoard">
+                Score: 0
+            </div>
 
-</div>
+        </div>
 
-<div id="certificate">
+        <div id="certificate">
 
-<div class="cert-box">
+            <div class="cert-box">
 
-    <img id="schoolLogo"
-    src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
-    width="80">
+                <img id="schoolLogo" src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" width="80">
 
-    <h1>🏆 CERTIFICATE OF ACHIEVEMENT</h1>
+                <h1>🏆 CERTIFICATE OF ACHIEVEMENT</h1>
 
-    <p class="line">This is proudly awarded to</p>
+                <p class="line">This is proudly awarded to</p>
 
-    <h2 id="certName">Student Name</h2>
+                <h2 id="certName">Student Name</h2>
 
-    <p class="line">For successfully completing</p>
+                <p class="line">For successfully completing</p>
 
-    <h3>Preposition Practice Examination</h3>
+                <h3>Final Exam</h3>
 
-    <div class="resultBox">
+                <div class="resultBox">
 
-        <p id="certPercent"></p>
-        <p id="certStatus"></p>
-        <p id="certGrade"></p>
-        <p id="certDate"></p>
+                    <p id="certPercent"></p>
+                    <p id="certStatus"></p>
+                    <p id="certGrade"></p>
+                    <p id="certDate"></p>
+
+                </div>
+
+                <div class="signs">
+                    <div>Teacher Signature</div>
+                    <div>Principal Signature</div>
+                </div>
+
+                <!-- <button id="printBtn" onclick="window.print()">🖨 Print Certificate</button> -->
+
+
+                <button id="downloadQA" style="background:#f39c12;color:white;margin:5px;">
+                    📄 Download Q & A
+                </button>
+
+                <!-- <button id="certificateBtn" onclick="window.print()" style="background:#27ae60;color:white;margin:5px;">
+                    🏆 Download Certificate + Q&A
+                </button> -->
+
+                <button id="certificateBtn" onclick="window.print()" style="background:#27ae60;color:white;margin:5px;">
+                    🏆 Download Certificate
+                </button>
+
+
+
+            </div> <!-- cert-box -->
+        </div> <!-- certificate -->
+        <div id="reviewSection" style="display:none;margin-top:30px;">
+
+            <h2>📊 Answer Review</h2>
+
+            <table border="1" width="100%" id="reviewTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Question</th>
+                        <th>Your Answer</th>
+                        <th>Correct Answer</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div> <!-- container -->
+
 
     </div>
 
-    <div class="signs">
-        <div>Teacher Signature</div>
-        <div>Principal Signature</div>
     </div>
+    <script>
 
-    <button id="printBtn" onclick="window.print()">🖨 Print Certificate</button>
+        // Print Screen Detection
+        document.addEventListener("keyup", function (e) {
 
-</div>
+            if (e.key === "PrintScreen") {
 
-</div>
-<div id="reviewSection"
-style="display:none;margin-top:20px;">
+                cheatCount++;
 
-<h2>📊 Answer Review</h2>
+                navigator.clipboard.writeText("");
 
-<table border="1"
-width="100%"
-id="reviewTable">
+                alert("⚠ Screenshot detected! Cheating attempt: " + cheatCount);
 
-<thead>
+                if (cheatCount >= 3) {
+                    alert("❌ Exam terminated due to cheating.");
+                    finishExam();
+                }
+            }
+        });
 
-<tr>
+        // Windows Snipping Tool (partial detection)
+        document.addEventListener("keydown", function (e) {
 
-<th>No</th>
-<th>Question</th>
-<th>Your Answer</th>
-<th>Correct Answer</th>
+            if (
+                e.key === "PrintScreen" ||
+                (e.ctrlKey && e.shiftKey && e.key === "S")
+            ) {
 
-</tr>
+                cheatCount++;
 
-</thead>
+                alert("⚠ Screenshot tool detected!");
 
-<tbody></tbody>
+                if (cheatCount >= 3) {
+                    alert("❌ Exam terminated due to cheating.");
+                    finishExam();
+                }
+            }
+        });
 
-</table>
+        let cheatCount = 0;
 
-</div>
-
-</div>
-<script>
-
-// Print Screen Detection
-document.addEventListener("keyup", function(e){
-
-    if(e.key === "PrintScreen"){
-
-        cheatCount++;
-
-        navigator.clipboard.writeText("");
-
-        alert("⚠ Screenshot detected! Cheating attempt: " + cheatCount);
-
-        if(cheatCount >= 3){
-            alert("❌ Exam terminated due to cheating.");
-            finishExam();
-        }
-    }
-});
-
-// Windows Snipping Tool (partial detection)
-document.addEventListener("keydown", function(e){
-
-    if(
-        e.key === "PrintScreen" ||
-        (e.ctrlKey && e.shiftKey && e.key === "S")
-    ){
-
-        cheatCount++;
-
-        alert("⚠ Screenshot tool detected!");
-
-        if(cheatCount >= 3){
-            alert("❌ Exam terminated due to cheating.");
-            finishExam();
-        }
-    }
-});
-
-    let cheatCount = 0;
-
-const allQuestions = [
-{q:"Which letter comes after A?",options:["B","C","D","E"],answer:"B"},
+        const allQuestions = [
+            {q:"Which letter comes after A?",options:["B","C","D","E"],answer:"B"},
 {q:"Which letter comes after B?",options:["C","D","E","F"],answer:"C"},
 {q:"Which letter comes after C?",options:["D","E","F","G"],answer:"D"},
 {q:"Which letter comes after D?",options:["E","F","G","H"],answer:"E"},
@@ -1525,344 +1576,395 @@ const allQuestions = [
 {q:"He completed the work ___ time.",options:["on","in","at","under"],answer:"on"},
 {q:"The airplane landed ___ the airport.",options:["at","on","in","under"],answer:"at"}
 
-];
+        ];
 
-function removeDuplicateQuestions(arr){
-    const seen = new Set();
+        function removeDuplicateQuestions(arr) {
+            const seen = new Set();
 
-    return arr.filter(q => {
-        const key = q.q.trim().toLowerCase();
+            return arr.filter(q => {
+                const key = q.q.trim().toLowerCase();
 
-        if(seen.has(key)){
-            return false;
+                if (seen.has(key)) {
+                    return false;
+                }
+
+                seen.add(key);
+                return true;
+            });
         }
 
-        seen.add(key);
-        return true;
-    });
-}
+        let questions = removeDuplicateQuestions(allQuestions);
+        let currentQuestion = 0;
+        let score = 0;
+        let timer = 30;
+        let timerInterval;
+        let studentName = "";
+        let reviewData = [];
 
-let questions = removeDuplicateQuestions(allQuestions);
-let currentQuestion = 0;
-let score = 0;
-let timer = 30;
-let timerInterval;
-let studentName = "";
-let reviewData = [];
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
 
-function shuffleArray(arr){
-    for(let i=arr.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [arr[i],arr[j]]=[arr[j],arr[i]];
-    }
-    return arr;
-}
+        function startExam() {
 
-function startExam(){
+            studentName =
+                document.getElementById("studentName").value.trim();
 
-    studentName =
-    document.getElementById("studentName").value.trim();
+            if (studentName === "") {
+                alert("Please enter student name");
+                return;
+            }
 
-    if(studentName===""){
-        alert("Please enter student name");
-        return;
-    }
+            document.getElementById("studentSection").style.display = "none";
+            document.getElementById("quizSection").style.display = "block";
 
-    document.getElementById("studentSection").style.display="none";
-    document.getElementById("quizSection").style.display="block";
+            shuffleArray(questions);
+            questions = shuffleArray(
+                removeDuplicateQuestions(allQuestions)
+            ).slice(0, 10);
 
-    shuffleArray(questions);
-    questions = shuffleArray(
-    removeDuplicateQuestions(allQuestions)
-).slice(0,100);
+            loadQuestion();
+        }
 
-    loadQuestion();
-}
+        function loadQuestion() {
 
-function loadQuestion(){
+            if (currentQuestion >= questions.length) {
+                finishExam();
+                return;
+            }
 
-    if(currentQuestion>=questions.length){
-        finishExam();
-        return;
-    }
+            let q = questions[currentQuestion];
 
-    let q = questions[currentQuestion];
+            document.getElementById("progressText").innerHTML =
+                `Question ${currentQuestion + 1} of ${questions.length}`;
 
-    document.getElementById("progressText").innerHTML =
-    `Question ${currentQuestion+1} of ${questions.length}`;
+            document.getElementById("progressBar").style.width =
+                ((currentQuestion / questions.length) * 100) + "%";
 
-    document.getElementById("progressBar").style.width =
-    ((currentQuestion/questions.length)*100)+"%";
+            document.getElementById("question").innerHTML = q.q;
 
-    document.getElementById("question").innerHTML = q.q;
+            let options = [...q.options];
+            shuffleArray(options);
 
-    let options=[...q.options];
-    shuffleArray(options);
+            let html = "";
 
-    let html="";
+            options.forEach(option => {
 
-    options.forEach(option=>{
-
-        html += `
+                html += `
         <button class="option"
         onclick="checkAnswer('${option}')">
         ${option}
         </button>
         `;
 
-    });
+            });
 
-    document.getElementById("options").innerHTML = html;
+            document.getElementById("options").innerHTML = html;
 
-    startTimer();
-}
+            startTimer();
+        }
 
-function startTimer(){
+        function startTimer() {
 
-    clearInterval(timerInterval);
+            clearInterval(timerInterval);
 
-    timer = 30;
+            timer = 30;
 
-    document.getElementById("timer").innerHTML =
-    `⏳ ${timer}`;
+            document.getElementById("timer").innerHTML =
+                `⏳ ${timer}`;
 
-    timerInterval = setInterval(()=>{
+            timerInterval = setInterval(() => {
 
-        timer--;
+                timer--;
 
-        document.getElementById("timer").innerHTML =
-        `⏳ ${timer}`;
+                document.getElementById("timer").innerHTML =
+                    `⏳ ${timer}`;
 
-        if(timer<=0){
+                if (timer <= 0) {
+
+                    clearInterval(timerInterval);
+
+                    let q = questions[currentQuestion];
+
+                    reviewData.push({
+                        question: q.q,
+                        selected: "No Answer",
+                        correct: q.answer
+                    });
+
+                    currentQuestion++;
+
+                    loadQuestion();
+                }
+
+            }, 1000);
+        }
+
+        function checkAnswer(selected) {
 
             clearInterval(timerInterval);
 
             let q = questions[currentQuestion];
 
-            reviewData.push({
-                question:q.q,
-                selected:"No Answer",
-                correct:q.answer
+            let buttons =
+                document.querySelectorAll(".option");
+
+            buttons.forEach(btn => {
+
+                btn.disabled = true;
+
+                if (btn.innerText === q.answer) {
+                    btn.classList.add("correct");
+                }
+
+                if (
+                    btn.innerText === selected &&
+                    selected !== q.answer
+                ) {
+                    btn.classList.add("wrong");
+                }
+
             });
+
+            reviewData.push({
+                question: q.q,
+                selected: selected,
+                correct: q.answer
+            });
+
+            if (selected === q.answer) {
+
+                score++;
+
+                let sound =
+                    document.getElementById("correctSound");
+
+                if (sound) sound.play();
+
+            } else {
+
+                let sound =
+                    document.getElementById("wrongSound");
+
+                if (sound) sound.play();
+
+            }
+
+            document.getElementById("scoreBoard").innerHTML =
+                `Score: ${score}`;
 
             currentQuestion++;
 
-            loadQuestion();
+            setTimeout(loadQuestion, 1200);
         }
 
-    },1000);
-}
+        function finishExam() {
 
-function checkAnswer(selected){
+            document.getElementById("quizSection").style.display = "none";
 
-    clearInterval(timerInterval);
+            document.getElementById("certificate").style.display = "block";
 
-    let q = questions[currentQuestion];
+            let percentage =
+                Math.round((score / questions.length) * 100);
 
-    let buttons =
-    document.querySelectorAll(".option");
+            document.getElementById("certName").innerHTML =
+                studentName;
 
-    buttons.forEach(btn=>{
+            document.getElementById("certPercent").innerHTML =
+                `Percentage : ${percentage}%`;
 
-        btn.disabled=true;
+            document.getElementById("certStatus").innerHTML =
+                percentage >= 40 ? "✅ PASS" : "❌ FAIL";
 
-        if(btn.innerText===q.answer){
-            btn.classList.add("correct");
+            if (cheatCount >= 3) {
+                document.getElementById("certStatus").innerHTML =
+                    "❌ FAILED (CHEATING DETECTED)";
+            }
+
+            let grade = "";
+
+            if (percentage >= 90) {
+                grade = "🥇 GOLD";
+            }
+            else if (percentage >= 70) {
+                grade = "🥈 SILVER";
+            }
+            else if (percentage >= 50) {
+                grade = "🥉 BRONZE";
+            }
+            else {
+                grade = "📚 PARTICIPATION";
+            }
+
+            document.getElementById("certGrade").innerHTML =
+                `Grade : ${grade}`;
+
+            document.getElementById("certDate").innerHTML =
+                new Date().toLocaleDateString();
+
+            localStorage.setItem(
+                "examResult",
+                JSON.stringify({
+                    name: studentName,
+                    score: score,
+                    percentage: percentage
+                }));
+
+            let tbody =
+                document.querySelector("#reviewTable tbody");
+
+            let html = "";
+
+            reviewData.forEach((r, index) => {
+
+                html += `
+<tr style="${r.selected !== r.correct
+                        ? 'background:#ffe5e5;'
+                        : 'background:#e8ffe8;'
+                    }">
+<td>${index + 1}</td>
+<td>${r.question}</td>
+<td style="color:${r.selected !== r.correct ? 'red' : 'green'
+                    };font-weight:bold;">
+${r.selected}
+</td>
+<td style="color:green;font-weight:bold;">
+${r.correct}
+</td>
+</tr>
+`;
+
+            });
+
+            tbody.innerHTML = html;
+
+            document.getElementById("reviewSection").style.display =
+                "block";
         }
 
-        if(
-        btn.innerText===selected &&
-        selected!==q.answer
-        ){
-            btn.classList.add("wrong");
-        }
 
-    });
+        document.addEventListener("contextmenu", e => {
+            e.preventDefault();
+        });
 
-    reviewData.push({
-        question:q.q,
-        selected:selected,
-        correct:q.answer
-    });
+        document.addEventListener("visibilitychange", () => {
 
-    if(selected===q.answer){
+            if (document.hidden) {
 
-        score++;
+                cheatCount++;
 
-        let sound =
-        document.getElementById("correctSound");
+                alert(
+                    "⚠ Tab switching is not allowed! Attempt: "
+                    + cheatCount
+                );
 
-        if(sound) sound.play();
+                if (cheatCount >= 3) {
 
-    }else{
+                    score = 0;
 
-        let sound =
-        document.getElementById("wrongSound");
+                    alert("❌ Exam terminated due to cheating.");
 
-        if(sound) sound.play();
+                    finishExam();
+                }
+            }
+        });
+
+        document.addEventListener("copy", e => {
+            e.preventDefault();
+            alert("⚠ Copying is not allowed.");
+        });
+
+        document.addEventListener("selectstart", e => {
+            e.preventDefault();
+        });
+
+        setInterval(() => {
+
+            if (
+                window.outerWidth - window.innerWidth > 160 ||
+                window.outerHeight - window.innerHeight > 160
+            ) {
+                alert("⚠ Developer Tools detected!");
+            }
+
+        }, 1000);
+
+
+
+
+
+        document.addEventListener("click", function (e) {
+
+            if (e.target.id === "downloadQA") {
+
+                
+let content = "EXAM REPORT\n\n";
+
+content += "========================\n";
+content += "✅ CORRECT ANSWERS\n";
+content += "========================\n\n";
+
+reviewData.forEach((r,index) => {
+
+    if(r.selected === r.correct){
+
+        content += (index+1) + ". " + r.question + "\n";
+        content += "Your Answer: " + r.selected + "\n";
+        content += "Correct Answer: " + r.correct + "\n";
+        content += "-------------------------\n\n";
 
     }
 
-    document.getElementById("scoreBoard").innerHTML =
-    `Score: ${score}`;
-
-    currentQuestion++;
-
-    setTimeout(loadQuestion,1200);
-}
-
-function finishExam(){
-
-    document.getElementById("quizSection").style.display="none";
-
-    document.getElementById("certificate").style.display="block";
-
-    let percentage =
-    Math.round((score/questions.length)*100);
-
-    document.getElementById("certName").innerHTML =
-    studentName;
-
-    document.getElementById("certPercent").innerHTML =
-    `Percentage : ${percentage}%`;
-
-    document.getElementById("certStatus").innerHTML =
-    percentage>=40 ? "✅ PASS" : "❌ FAIL";
-
-if(cheatCount >= 3){
-    document.getElementById("certStatus").innerHTML =
-    "❌ FAILED (CHEATING DETECTED)";
-}
-
-    let grade="";
-
-    if(percentage>=90){
-        grade="🥇 GOLD";
-    }
-    else if(percentage>=70){
-        grade="🥈 SILVER";
-    }
-    else if(percentage>=50){
-        grade="🥉 BRONZE";
-    }
-    else{
-        grade="📚 PARTICIPATION";
-    }
-
-    document.getElementById("certGrade").innerHTML =
-    `Grade : ${grade}`;
-
-    document.getElementById("certDate").innerHTML =
-    new Date().toLocaleDateString();
-
-    localStorage.setItem(
-    "examResult",
-    JSON.stringify({
-        name:studentName,
-        score:score,
-        percentage:percentage
-    }));
-
-    let tbody =
-    document.querySelector("#reviewTable tbody");
-
-    let html="";
-
-    reviewData.forEach((r,index)=>{
-
-        html += `
-        <tr>
-        <td>${index+1}</td>
-        <td>${r.question}</td>
-        <td>${r.selected}</td>
-        <td>${r.correct}</td>
-        </tr>
-        `;
-
-    });
-
-    tbody.innerHTML = html;
-
-    document.getElementById("reviewSection").style.display =
-    "block";
-}
-
-document.getElementById("downloadBtn").onclick =
-function(){
-
-    const result =
-    localStorage.getItem("examResult");
-
-    const blob =
-    new Blob([result],{
-        type:"application/json"
-    });
-
-    const a =
-    document.createElement("a");
-
-    a.href =
-    URL.createObjectURL(blob);
-
-    a.download =
-    "ExamResult.json";
-
-    a.click();
-};
-
-document.addEventListener("contextmenu", e=>{
-    e.preventDefault();
 });
 
-document.addEventListener("visibilitychange",()=>{
+content += "\n\n========================\n";
+content += "❌ WRONG ANSWERS\n";
+content += "========================\n\n";
 
-    if(document.hidden){
+reviewData.forEach((r,index) => {
 
-        cheatCount++;
+    if(r.selected !== r.correct){
 
-        alert(
-            "⚠ Tab switching is not allowed! Attempt: "
-            + cheatCount
-        );
+        content += (index+1) + ". " + r.question + "\n";
+        content += "Your Answer: " + r.selected + "\n";
+        content += "Correct Answer: " + r.correct + "\n";
+        content += "-------------------------\n\n";
 
-        if(cheatCount >= 3){
-
-            score = 0;
-
-            alert("❌ Exam terminated due to cheating.");
-
-            finishExam();
-        }
-    }
-});
-
-document.addEventListener("copy",e=>{
-    e.preventDefault();
-    alert("⚠ Copying is not allowed.");
-});
-
-document.addEventListener("selectstart",e=>{
-    e.preventDefault();
-});
-
-setInterval(()=>{
-
-    if(
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160
-    ){
-        alert("⚠ Developer Tools detected!");
     }
 
-},1000);
+});
 
-</script>
-<audio id="correctSound">
-<source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg">
-</audio>
+const blob = new Blob([content], {
+    type: "text/plain"
+});
 
-<audio id="wrongSound">
-<source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
-</audio>
+const a = document.createElement("a");
+
+a.href = URL.createObjectURL(blob);
+
+a.download = "Exam_Report.txt";
+
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+
+            }
+
+
+        });
+    </script>
+    <audio id="correctSound">
+        <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg">
+    </audio>
+
+    <audio id="wrongSound">
+        <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
+    </audio>
 </body>
+
 </html>
